@@ -1,0 +1,1583 @@
+/* /static/premium.css - workspace UI (left sidebar + bottom upload dock + tabbed results) */
+
+.workspace{
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: stretch;
+  width: 100%;
+  padding: 18px;
+}
+
+@media (max-width: 980px){
+  .workspace{ grid-template-columns: 1fr; padding: 14px; }
+}
+
+.sidebar{
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 16px;
+  position: sticky;
+  top: 86px; /* below topbar */
+  height: calc(100dvh - 110px);
+  overflow: auto;
+}
+
+@media (max-width: 980px){
+  .sidebar{ position: static; height: auto; }
+}
+
+.sidebar-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.sidebar h3{ margin:0; font-size: 18px; }
+
+.btn.mini{ padding: 8px 10px; border-radius: 14px; }
+
+.pdf-cards{
+  display:grid;
+  gap:10px;
+  margin-bottom: 14px;
+}
+
+.pdf-card{
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(0,0,0,0.10);
+  cursor: pointer;
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+html[data-theme="light"] .pdf-card{ background: rgba(255,255,255,0.55); }
+
+.pdf-card:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.22); }
+
+.pdf-card.active{
+  border-color: rgba(253,197,0,0.55);
+  box-shadow: 0 0 0 1px rgba(253,197,0,0.15) inset;
+  background: rgba(253,197,0,0.08);
+}
+
+.pdf-card .name{
+  font-weight: 800;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pdf-card .time{
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.upgrade{
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+}
+
+.upgrade h4{ margin:0 0 6px; }
+.upgrade p{ margin:0 0 10px; color: var(--muted); font-size: 13px; }
+.btn.full{ width: 100%; }
+.tiny{ margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+.main-area{
+  min-width: 0;
+  display:flex;
+  flex-direction: column;
+  gap: 14px;
+  height: calc(100dvh - 110px);
+}
+
+@media (max-width: 980px){
+  .main-area{ height: auto; }
+}
+
+/* ----------------------------
+   Results box + tabs
+---------------------------- */
+.results-box{
+  padding: 16px;
+  flex: 1;
+  min-height: 0;
+  display:flex;
+  flex-direction: column;
+}
+
+.results-head{
+  display:flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.results-title{ margin: 0; font-size: 20px; }
+.results-sub{ margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+
+.results-meta{
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+  max-width: 50%;
+}
+
+.tabs{
+  display:flex;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  overflow: auto;
+}
+
+.tab{
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  white-space: nowrap;
+  transition: background .12s ease, color .12s ease, border-color .12s ease;
+}
+
+.tab:hover{ background: rgba(255,255,255,0.06); color: var(--text); }
+
+.tab.active{
+  background: rgba(253,197,0,0.14);
+  border-color: rgba(253,197,0,0.35);
+  color: var(--text);
+}
+
+.panels{
+  margin-top: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.panel{
+  display:none;
+  height: 100%;
+  overflow: auto;
+  padding: 12px 6px 6px;
+}
+
+.panel.active{ display:block; }
+
+.panel-content{
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.empty-state{
+  border: 1px dashed rgba(255,255,255,0.18);
+  border-radius: 18px;
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+}
+
+.empty-title{ font-weight: 900; font-size: 16px; }
+.empty-sub{ margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+.kv{
+  display:grid;
+  grid-template-columns: 140px 1fr;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+  margin-bottom: 10px;
+}
+
+.kv .k{ color: var(--muted); font-weight: 800; font-size: 12px; letter-spacing: .2px; }
+.kv .v{ font-weight: 700; }
+
+.list{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+}
+
+.note{
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(64,145,108,0.08);
+  margin-bottom: 10px;
+}
+
+.formula{
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+  margin-bottom: 10px;
+}
+
+.formula .expr{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.18);
+  overflow:auto;
+}
+
+.formula .exp{
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ----------------------------
+   Upload dock (bottom-center)
+---------------------------- */
+.upload-dock{
+  position: sticky;
+  bottom: 12px;
+  z-index: 50;
+}
+
+@media (max-width: 980px){
+  .upload-dock{ position: static; }
+}
+
+.upload-box{
+  padding: 14px;
+}
+
+.upload-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.upload-title{ margin:0; font-size: 16px; }
+.upload-sub{ margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+
+.drop-zone{
+  border-radius: 18px;
+  border: 1px dashed rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.03);
+  padding: 14px;
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  flex-wrap: wrap;
+  outline: none;
+}
+
+.drop-zone:hover{ border-color: rgba(255,255,255,0.34); }
+.drop-zone:focus{ box-shadow: 0 0 0 3px rgba(253,197,0,0.18); border-color: rgba(253,197,0,0.45); }
+
+.drop-zone.dragover{
+  border-style: solid;
+  border-color: rgba(253,197,0,0.55);
+  background: rgba(253,197,0,0.08);
+}
+
+.dz-icon{
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  font-size: 20px;
+}
+
+.dz-text{ min-width: 200px; }
+.dz-title{ font-weight: 900; }
+.dz-sub{ color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.file-input{ display:none; }
+
+.file-btn{ margin-left: auto; }
+
+.file-name{
+  flex: 1;
+  min-width: 220px;
+  color: var(--muted);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.analyze-btn{ white-space: nowrap; }
+
+@media (max-width: 620px){
+  .file-btn{ margin-left: 0; }
+  .file-name{ min-width: 160px; }
+}
+
+/* ----------------------------
+   Pills (topbar)
+---------------------------- */
+.tries-pill{
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  border:1px solid var(--stroke);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.premium-pill{
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(64, 145, 108, 0.16);
+  border:1px solid rgba(64, 145, 108, 0.35);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ----------------------------
+   Fancy processing overlay
+---------------------------- */
+.processing-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 3000;
+}
+
+.processing-card{
+  width: 100%;
+  max-width: 520px;
+  padding: 18px;
+  display:grid;
+  gap: 10px;
+  text-align: center;
+}
+
+.processing-spinner{
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 6px solid rgba(255,255,255,0.14);
+  border-top-color: rgba(253,197,0,0.80);
+  margin: 6px auto 0;
+  animation: spin 1.05s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.processing-title{
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.processing-sub{
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ----------------------------
+   Upgrade modal (keep lightweight)
+---------------------------- */
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 2000;
+}
+
+.modal{
+  width: 100%;
+  max-width: 520px;
+  padding: 18px;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.modal-sub{
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.modal-list{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.modal-price{
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+}
+
+.price-big{ font-size: 22px; font-weight: 900; }
+.price-small{ font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.modal-actions{
+  margin-top: 14px;
+  display:grid;
+  gap: 10px;
+}
+
+.modal-hint{
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* =========================================================
+   Shifu ai – Results Fullscreen + Reader Mode + Better Sidebar
+   (append-only)
+========================================================= */
+
+/* Results header layout: filename left, actions right */
+.results-head{ align-items:center; }
+.results-left{ min-width: 0; display:flex; align-items:center; gap: 10px; }
+.results-filename{
+  font-weight: 900;
+  font-size: 14px;
+  max-width: 62vw;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.results-actions{ display:flex; align-items:center; gap: 8px; flex-wrap: wrap; }
+
+/* Fullscreen mode: results take the whole page */
+body.focus-mode .topbar{ display:none; }
+body.focus-mode .workspace{ padding:0; gap:0; grid-template-columns: 1fr; }
+body.focus-mode .sidebar{ display:none; }
+body.focus-mode .upload-dock{ display:none; }
+body.focus-mode .main-area{ height: 100dvh; }
+body.focus-mode .results-box{
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  width: 100%;
+  border-radius: 0;
+  margin: 0;
+  padding: 18px 18px 14px;
+  z-index: 5000;
+}
+body.focus-mode .tabs{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: blur(12px);
+}
+body.focus-mode .panels{ margin-top: 10px; }
+/* Reader mode: clean reading, centered column */
+body.reader-mode .sidebar{ display:none; }
+body.reader-mode .upload-dock{ display:none; }
+body.reader-mode .workspace{ grid-template-columns: 1fr; }
+body.reader-mode .main-area{ height: calc(100dvh - 110px); }
+body.reader-mode .results-box{ max-width: 960px; margin: 0 auto; padding: 22px 20px; }
+body.reader-mode .panel-content{ font-size: 16px; line-height: 1.9; }
+body.reader-mode .kv{ background: transparent; border-color: rgba(255,255,255,0.10); }
+body.reader-mode .note, body.reader-mode .formula{ background: rgba(255,255,255,0.03); }
+
+/* Sidebar toggle: nicer */
+.sidebar-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width: 50%;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  transition: background .12s ease, transform .12s ease, border-color .12s ease;
+}
+.sidebar-toggle:hover{ background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.18); }
+.sidebar-toggle:active{ transform: translateY(1px); }
+
+/* Collapsed sidebar: narrow + hide names + show initials */
+body.sidebar-collapsed .workspace{ grid-template-columns: 78px 1fr; }
+body.sidebar-collapsed .sidebar{ padding: 12px 8px; }
+body.sidebar-collapsed .sidebar-head h3{ display:none; }
+body.sidebar-collapsed .upgrade{ display:none; }
+
+.pdf-card .abbr{
+  display:none;
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  display:grid;
+  place-items:center;
+  font-weight: 900;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.05);
+}
+body.sidebar-collapsed .pdf-card{ display:flex; align-items:center; justify-content:center; padding: 10px; }
+body.sidebar-collapsed .pdf-card .name{ display:none; }
+body.sidebar-collapsed .pdf-card .abbr{ display:grid; }
+body.sidebar-collapsed .pdf-card:hover{ transform: none; }
+body.sidebar-collapsed .sidebar-toggle{width: 100%;}
+
+
+/* ----------------------------
+   Analysis level select
+---------------------------- */
+.level-select{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+}
+.level-label{
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--muted);
+}
+select.level{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-weight: 800;
+  outline: none;
+}
+
+/* ----------------------------
+   Chat tab (free PDF chat)
+---------------------------- */
+.chat-wrap{
+  display:flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+}
+.chat-messages{
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-bubble{
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+  line-height: 1.6;
+}
+.chat-bubble.user{
+  background: rgba(0,0,0,0.10);
+}
+html[data-theme="light"] .chat-bubble.user{
+  background: rgba(255,255,255,0.70);
+}
+.chat-bubble .src{
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.chat-input{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  padding: 10px 6px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.chat-text{
+  flex: 1;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(0,0,0,0.18);
+  color: var(--text);
+  padding: 12px 14px;
+  outline: none;
+}
+html[data-theme="light"] .chat-text{ background: rgba(255,255,255,0.65); }
+
+/* Page analyze controls */
+.page-analyze{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap: wrap;
+}
+.page-input{
+  width: 88px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+}
+.page-input::placeholder{ color: var(--muted); }
+.level.mini{
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+
+/* Chat sources (collapsible) */
+.chat-sources{
+  margin-top: 10px;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+}
+.chat-sources summary{
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--muted);
+}
+.chat-src-list{ margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+.chat-src-list li{ margin-bottom: 10px; }
+.src-snippet{ font-size: 12px; line-height: 1.5; }
+
+
+
+/* ----------------------------
+   PDF preview pane + Chat split view
+---------------------------- */
+.pdf-pane{
+  display:none;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.pdf-pane-head{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  margin-bottom: 10px;
+}
+.pdf-pane-title{ font-weight: 700; }
+.pdf-pane-hint{ opacity: .7; font-size: 12px; }
+
+.pdf-frame{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.25);
+}
+
+/* When Chat tab is active we split main area into 2 columns */
+body.chat-split .main-area{
+  flex-direction: row;
+  gap: 14px;
+}
+body.chat-split .pdf-pane{ display:block; flex: 1; }
+body.chat-split .results-box{ flex: 1; min-height: 0; }
+
+/* Clickable page sources */
+button.src{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(64,145,108,0.16);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+button.src:hover{ transform: translateY(-1px); }
+
+/* Chat match chips */
+.match-wrap{ margin-top: 10px; }
+.match-title{ font-size: 12px; opacity: .8; margin-bottom: 6px; }
+.match-chips{ display:flex; flex-wrap: wrap; gap: 8px; }
+.match-chip{
+  max-width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(253,197,0,0.12);
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+}
+.match-chip:hover{ transform: translateY(-1px); }
+
+
+/* ============================
+   Settings menu (top-right)
+============================ */
+.settings-wrap{ position: relative; }
+.settings-btn{ padding: 8px 10px; }
+.settings-menu{
+  position: absolute;
+  right: 0;
+  top: 44px;
+  min-width: 220px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  z-index: 50;
+}
+.settings-menu .menu-item{
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+}
+.settings-menu .menu-item:hover{
+  background: rgba(255,255,255,0.06);
+}
+.settings-menu .menu-item.danger{ color: #ff6b6b; }
+.settings-menu .menu-sep{
+  height: 1px;
+  background: rgba(255,255,255,0.10);
+  margin: 8px 2px;
+}
+
+/* ============================
+   Return buttons (Reader / Focus)
+============================ */
+/* ============================
+   Return buttons – Better UX
+============================ */
+
+.mode-return{
+  position: fixed;
+  top: 92px;            /* just under topbar */
+  left: 20px;
+  display: none;
+  gap: 10px;
+  z-index: 1200;
+}
+
+body.reader-mode .mode-return{ display: flex; }
+body.focus-mode .mode-return{ display: flex; }
+#exitReaderBtn{ display:none; }
+#exitFocusBtn{ display:none; }
+body.reader-mode #exitReaderBtn{ display:inline-flex; }
+body.focus-mode #exitFocusBtn{ display:inline-flex; }
+
+/* ============================
+   Chat Full View Overlay
+============================ */
+.chat-full-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(1200px 900px at 20% 10%, rgba(64,145,108,0.18), transparent 60%),
+              radial-gradient(1000px 800px at 80% 30%, rgba(0,80,157,0.22), transparent 60%),
+              rgba(10,12,14,0.94);
+}
+html[data-theme="light"] .chat-full-overlay{
+  background: radial-gradient(1200px 900px at 20% 10%, rgba(64,145,108,0.12), transparent 60%),
+              radial-gradient(1000px 800px at 80% 30%, rgba(0,80,157,0.12), transparent 60%),
+              rgba(245,246,248,0.92);
+}
+.chat-full-header{
+  margin: 14px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+.chat-full-title{ font-weight: 800; letter-spacing: 0.2px; }
+.chat-full-body{
+  flex: 1;
+  min-height: 0;
+  margin: 0 14px 14px;
+  display:flex;
+  gap: 14px;
+}
+.chat-full-left, .chat-full-right{
+  flex: 1;
+  min-height: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+}
+.chat-pdf-frame{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+.chat-full-right .chat-wrap{ height: 100%; }
+.chat-full-right .chat-messages{ height: calc(100% - 62px); }
+
+/* Feedback modal */
+.feedback-form{ margin-top: 12px; display:flex; flex-direction:column; gap: 10px; }
+.feedback-label{ font-size: 12px; color: var(--muted); font-weight: 700; }
+.feedback-textarea{
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  outline: none;
+}
+html[data-theme="light"] .feedback-textarea{
+  background: rgba(255,255,255,0.68);
+  border-color: rgba(0,0,0,0.10);
+}
+.feedback-hint{ font-size: 12px; color: var(--muted); min-height: 16px; }
+
+.policy-text p{ margin: 10px 0; line-height: 1.5; }
+
+/* Make source pages clickable in chat */
+.chat-src-list li b{ cursor: pointer; }
+.chat-src-list li b:hover{ text-decoration: underline; }
+.match-chip{ cursor:pointer; }
+
+.pdf-pane-head.flash{ box-shadow: 0 0 0 2px rgba(253,197,0,0.65), 0 12px 40px rgba(253,197,0,0.12); transition: box-shadow 0.25s ease; }
+/* ============================
+   Dark mode ONLY – Analyze level select
+============================ */
+html[data-theme="dark"] select.level.mini {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.35)),
+    url("data:image/svg+xml;utf8,<svg fill='%23FDC500' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+    no-repeat right 12px center;
+
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.18);
+  font-weight: 800;
+  padding: 8px 36px 8px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+/* Hover */
+html[data-theme="dark"] select.level.mini:hover {
+  border-color: rgba(253,197,0,0.55);
+  background-color: rgba(255,255,255,0.06);
+}
+
+/* Focus */
+html[data-theme="dark"] select.level.mini:focus {
+  outline: none;
+  border-color: rgba(253,197,0,0.75);
+  box-shadow: 0 0 0 3px rgba(253,197,0,0.22);
+}
+
+/* Dropdown list (limited but helps in dark mode) */
+html[data-theme="dark"] select.level.mini option {
+  background-color: #0f1115;
+  color: #ffffff;
+}
+html[data-theme="dark"] select.level.mini {
+  color-scheme: dark;
+}
+
+
+/* =========================================================
+   Fixes: Reader/Focus modes polish + Print/Export + Select dropdown in dark mode
+========================================================= */
+
+/* Make the mode return bar always visible above focus fullscreen */
+.mode-return{ z-index: 7000; }
+.mode-return{
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+}
+html[data-theme="light"] .mode-return{
+  background: rgba(255,255,255,0.75);
+  border-color: rgba(0,0,0,0.10);
+}
+
+/* Reader mode should be clean (less "noisy") */
+body.reader-mode{
+  background: rgba(10,12,14,0.96) !important;
+}
+html[data-theme="light"] body.reader-mode{
+  background: rgba(245,246,248,0.98) !important;
+}
+
+/* Ensure the centered reader card looks crisp */
+body.reader-mode .results-box{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+html[data-theme="light"] body.reader-mode .results-box{
+  background: rgba(255,255,255,0.88);
+  border-color: rgba(0,0,0,0.10);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.10);
+}
+
+/* Smooth mode transitions */
+.results-box, .workspace, .main-area{
+  transition: transform .20s ease, opacity .20s ease, padding .20s ease, max-width .20s ease;
+}
+body.mode-enter .results-box{ opacity: 0.8; transform: translateY(6px) scale(0.995); }
+body.mode-exit  .results-box{ opacity: 0.7; transform: translateY(8px) scale(0.99); }
+
+/* Focus mode: avoid layout glitches and keep content scrollable */
+body.focus-mode .results-box{
+  overflow: hidden;
+}
+body.focus-mode .panel{ padding-bottom: 70px; } /* space so return bar never overlaps content */
+
+/* Dark-mode select dropdown (helps on Windows/Chrome) */
+html[data-theme="dark"] select.level{
+  color-scheme: dark;
+}
+html[data-theme="dark"] select.level option,
+html[data-theme="dark"] select.level optgroup{
+  background-color: #0f1115;
+  color: #ffffff;
+}
+
+/* Print / Export (Reader mode) */
+@media print{
+  /* Hide app chrome */
+  .topbar, .sidebar, .upload-dock, .tabs, .results-actions, .mode-return,
+  #readerModeBtn, #focusToggleBtn, #copySummaryBtn, #copyHighlightsBtn, #printBtn{
+    display: none !important;
+  }
+.mode-return .btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .2px;
+
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+/* Light mode */
+html[data-theme="light"] .mode-return .btn{
+  background: rgba(255,255,255,0.85);
+}
+
+/* Hover */
+.mode-return .btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(0,0,0,.45);
+}
+
+/* Icon accent */
+.mode-return .btn::before{
+  content: "←";
+  font-weight: 900;
+}
+.mode-return{
+  animation: returnSlide .25s cubic-bezier(.22,1.15,.36,1);
+}
+
+@keyframes returnSlide{
+  from{
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Reader mode return – navigation style */
+body.reader-mode .mode-return{
+  top: 92px;
+  left: 20px;
+  bottom: auto;
+  right: auto;
+}
+/* Focus mode return – utility control */
+body.focus-mode .mode-return{
+  top: 16px;
+  right: 16px;
+  left: auto;
+  bottom: auto;
+}
+/* Focus mode button look */
+body.focus-mode #exitFocusBtn{
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 900;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(18px);
+}
+
+/* Remove text, keep icon feel */
+body.focus-mode #exitFocusBtn::before{
+  content: "⛶";
+  margin-right: 6px;
+}
+body.focus-mode #exitFocusBtn:hover::after{
+  content: " Exit full screen";
+  margin-left: 6px;
+  font-weight: 700;
+  opacity: .85;
+}
+
+  /* Make page clean */
+  html, body{ background: #fff !important; color: #000 !important; }
+  body{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* Expand content fully */
+  .workspace{ display:block !important; padding: 0 !important; }
+  .main-area{ height: auto !important; }
+  .results-box{
+    position: static !important;
+    inset: auto !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  .panel{ display:block !important; height: auto !important; overflow: visible !important; padding: 0 !important; }
+  .panel-content{ font-size: 12.5pt !important; line-height: 1.55 !important; color: #000 !important; }
+  .kv, .note, .formula{
+    border-color: #ddd !important;
+    background: transparent !important;
+  }
+  .formula .expr{ border-color: #ddd !important; background: #f7f7f7 !important; color:#000 !important; }
+}
+/* Chat overlay must ignore focus mode rules */
+body.focus-mode.chat-full-active .results-box{
+  position: static;
+  inset: auto;
+  height: auto;
+  width: auto;
+  z-index: auto;
+}
+body.focus-mode.chat-split .main-area{
+  flex-direction: column;
+}
+body.focus-mode .pdf-pane{
+  display: none;
+}
+/* ============================
+   FIX Reader Mode Layout
+============================ */
+
+/* Reader mode must fully override workspace + main layout */
+body.reader-mode .workspace{
+  display: block;
+  padding: 0;
+}
+
+body.reader-mode .main-area{
+  display: block;
+  height: auto;
+}
+
+/* Center the results box like a reading column */
+body.reader-mode .results-box{
+  position: relative;
+  margin: 24px auto;
+  max-width: 860px;
+  width: 100%;
+  padding: 28px 26px;
+}
+
+/* Make tabs stay readable but not full-width */
+body.reader-mode .tabs{
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Panels should scroll naturally */
+body.reader-mode .panels{
+  overflow: visible;
+}
+
+body.reader-mode .panel{
+  overflow: visible;
+}
+
+/* Kill chat / split / pdf layouts while reading */
+body.reader-mode.chat-split .pdf-pane,
+body.reader-mode.chat-split .results-box{
+  display: block;
+}
+
+body.reader-mode .pdf-pane{
+  display: none !important;
+}
+/* ============================
+   User Control Center
+============================ */
+.settings-center-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 8000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-center{
+  width: min(1000px, 92vw);
+  height: min(640px, 88vh);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* LEFT NAV */
+.settings-nav{
+  padding: 18px;
+  border-right: 1px solid var(--stroke);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.settings-nav h3{
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.settings-link{
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+.settings-link:hover{
+  background: rgba(255,255,255,0.06);
+}
+.settings-link.active{
+  background: rgba(253,197,0,0.14);
+}
+.settings-link.danger{
+  color: #ff6b6b;
+}
+
+/* RIGHT SIDE */
+.settings-content{
+  display: flex;
+  flex-direction: column;
+}
+.settings-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--stroke);
+}
+.settings-body{
+  padding: 18px;
+  overflow: auto;
+  flex: 1;
+}
+
+.settings-section{
+  display: none;
+}
+.settings-section.active{
+  display: block;
+}
+/* ============================
+   Route-based Settings Page
+============================ */
+.settings-page{
+  position: fixed;
+  inset: 0;
+  z-index: 7000;
+  background: var(--bg);
+  padding: 24px;
+}
+
+.settings-layout{
+  max-width: 1100px;
+  margin: 0 auto;
+  height: calc(100dvh - 48px);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.settings-nav{
+  padding: 18px;
+  border-right: 1px solid var(--stroke);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-nav h3{
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+
+.settings-link{
+  text-decoration: none;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.settings-link:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.settings-link.active{
+  background: rgba(253,197,0,0.14);
+}
+
+.settings-link.danger{
+  color: #ff6b6b;
+}
+
+.settings-content{
+  padding: 22px;
+  overflow: auto;
+}
+
+.settings-section{
+  display: none;
+}
+
+.settings-section.active{
+  display: block;
+}
+/* ============================
+   Settings – Return Button
+============================ */
+
+/* Wrapper inside settings content */
+.settings-header{
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+/* Return button styling */
+#settingsReturnBtn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 14px;
+  border-radius: 14px;
+
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+/* Hover */
+#settingsReturnBtn:hover{
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(253,197,0,0.55);
+  box-shadow: 0 0 0 2px rgba(253,197,0,0.12);
+}
+
+/* Active (click) */
+#settingsReturnBtn:active{
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Keyboard focus */
+#settingsReturnBtn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(253,197,0,0.28);
+  border-color: rgba(253,197,0,0.75);
+}
+
+/* Light mode polish */
+html[data-theme="light"] #settingsReturnBtn{
+  background: rgba(255,255,255,0.75);
+  border-color: rgba(0,0,0,0.12);
+}
+html[data-theme="light"] #settingsReturnBtn:hover{
+  background: rgba(255,255,255,0.95);
+}
+.settings-header{
+  animation: slideInLeft 0.25s ease both;
+}
+
+@keyframes slideInLeft{
+  from{
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to{
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* ============================
+   Upload Dock – Animated Toggle
+============================ */
+
+.upload-dock{
+  transition: transform .25s ease;
+}
+
+/* Main animated container */
+.upload-box{
+  transition:
+    max-height .35s cubic-bezier(.4,0,.2,1),
+    padding .25s ease,
+    opacity .2s ease;
+  overflow: hidden;
+}
+
+/* Collapsed state */
+body.upload-collapsed .upload-box{
+  max-height: 54px;
+  padding: 8px 14px;
+}
+
+/* Hide content smoothly */
+body.upload-collapsed .drop-zone,
+body.upload-collapsed .level-select,
+body.upload-collapsed .analyze-btn,
+body.upload-collapsed .file-name{
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+/* Compact header */
+body.upload-collapsed .upload-title{
+  font-size: 14px;
+  opacity: .85;
+}
+
+/* Toggle button animation */
+#uploadToggleBtn{
+  transition: transform .25s ease;
+}
+body.upload-collapsed #uploadToggleBtn{
+  transform: rotate(180deg);
+}
+/* ============================
+   Upload Dock – Magnetic Snap
+============================ */
+
+.upload-dock{
+  position: relative;
+  transition:
+    transform 420ms cubic-bezier(.22,1.2,.36,1),
+    filter 200ms ease;
+  will-change: transform;
+}
+
+/* Expanded (default) */
+.upload-dock{
+  transform: translateY(0) scale(1);
+}
+
+/* Collapsing snap */
+body.upload-collapsed .upload-dock{
+  transform: translateY(22px) scale(0.97);
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+}
+
+/* Upload box elasticity */
+.upload-box{
+  transition:
+    max-height .45s cubic-bezier(.22,1.15,.36,1),
+    padding .25s ease,
+    opacity .2s ease,
+    transform .45s cubic-bezier(.22,1.15,.36,1);
+}
+
+/* Slight compression when collapsed */
+body.upload-collapsed .upload-box{
+  transform: scaleX(.985);
+}
+
+/* Magnetic “hover pull” when collapsed */
+body.upload-collapsed .upload-dock:hover{
+  transform: translateY(16px) scale(0.985);
+}
+/* Snap pulse feedback */
+.snap-pulse{
+  animation: snapPulse 180ms ease-out;
+}
+
+@keyframes snapPulse{
+  0%   { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(8px) scale(.985); }
+  100% { transform: translateY(0) scale(1); }
+}
+/* ============================
+   Results (3 dots) menu
+============================ */
+
+.results-menu-wrap{
+  position: relative;
+}
+
+.results-menu{
+  position: absolute;
+  right: 0;
+  top: 42px;
+  min-width: 190px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  z-index: 80;
+}
+
+.results-menu .menu-item{
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.results-menu .menu-item:hover{
+  background: rgba(255,255,255,0.06);
+}
+/* ============================
+   Toast Notification
+============================ */
+
+.notification{
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(20,20,20,0.85);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  transition:
+    opacity .25s ease,
+    transform .35s cubic-bezier(.22,1.15,.36,1);
+}
+
+html[data-theme="light"] .notification{
+  background: rgba(255,255,255,0.95);
+  color: #0b1020;
+}
+
+/* Visible */
+.notification.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Leaving */
+.notification.hide{
+  opacity: 0;
+  transform: translateX(-50%) translateY(18px);
+}

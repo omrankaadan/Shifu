@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin - Platform Control Center</title>
+
+  <!-- Reuse your platform UI styles -->
+  <link rel="stylesheet" href="/static/ui.css" />
+  <link rel="stylesheet" href="/static/spinner.css" />
+
+  <!-- Admin page styles (built to match premium + auth UI) -->
+  <link rel="stylesheet" href="/static/admin.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="app static-bg page-layout">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">AD</div>
+      <div>
+        <div class="brand-name">Admin</div>
+        <div class="brand-tag">Control Center</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div class="pill" id="adminPill" title="Admin session">🛡️ Admin</div>
+
+      <button id="themeToggle" class="theme-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span><span class="theme-text">Dark</span>
+      </button>
+
+      <a class="navlink" href="/static/premium.html">Workspace</a>
+      <a class="navlink" href="https://platform.openai.com/usage" target="_blank" rel="noopener">OpenAI Usage</a>
+      <button class="btn ghost" type="button" onclick="exportCsv('overview')">Export CSV</button>
+      <button class="btn primary" type="button" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</header>
+
+<main class="admin-page">
+  <div class="admin-wrap reveal">
+
+    <!-- LEFT: Nav -->
+    <aside class="admin-nav glass">
+      <div class="nav-head">
+        <div>
+          <h2>Dashboard</h2>
+          <p class="muted" id="adminEmail">Loading…</p>
+        </div>
+
+        <button class="btn mini ghost" type="button" onclick="refreshAll()">↻</button>
+      </div>
+
+      <div class="nav-buttons" role="tablist" aria-label="Admin sections">
+        <button class="nav-btn active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+        <button class="nav-btn" data-tab="users" role="tab" aria-selected="false">Users</button>
+        <button class="nav-btn" data-tab="pdfs" role="tab" aria-selected="false">PDFs</button>
+        <button class="nav-btn danger" data-tab="abuse" role="tab" aria-selected="false">IP Abuse</button>
+      </div>
+
+      <div class="nav-footer">
+        <div class="mini-kv">
+          <div class="k">System</div>
+          <div class="v" id="sysStatus">OK</div>
+        </div>
+        <div class="mini-kv">
+          <div class="k">Last refresh</div>
+          <div class="v" id="lastRefresh">—</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Content -->
+    <section class="admin-content">
+
+      <!-- TOP STATS -->
+      <div class="stats-grid">
+        <div class="stat-card glass">
+          <div class="stat-label">Users</div>
+          <div class="stat-value" id="statUsers">—</div>
+        </div>
+
+        <div class="stat-card glass">
+          <div class="stat-label">Uploads</div>
+          <div class="stat-value" id="statPdfs">—</div>
+          <div class="stat-sub" id="statPdfsSub">—</div>
+        </div>
+
+        <div class="stat-card glass">
+          <div class="stat-label">Payments</div>
+          <div class="stat-value" id="statPayments">—</div>
+          <div class="stat-sub" id="statPaymentsSub">—</div>
+        </div>
+      </div>
+
+      <!-- Panels -->
+      <div class="panel-card glass">
+        <div class="panel-head">
+          <div>
+            <h3 id="panelTitle">Overview</h3>
+            <p class="muted" id="panelSub">Platform usage + operational metrics</p>
+          </div>
+
+          <div class="panel-actions">
+            <input id="searchBox" class="search" type="search" placeholder="Search in tables…" />
+            <button class="btn ghost" type="button" id="exportBtn" onclick="exportCurrent()">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <!-- OVERVIEW -->
+          <div class="tab-panel active" id="tab-overview">
+            <div class="overview-grid">
+              <div class="glass box">
+                <div class="box-title">Last 14 days</div>
+                <div class="spark-wrap" id="sparkWrap">
+                  <div class="spark" id="spark"></div>
+                </div>
+                <div class="legend">
+                  <span class="dot d1"></span> Signups
+                  <span class="dot d2"></span> Uploads
+                </div>
+              </div>
+
+              <div class="glass box">
+                <div class="box-title">Quick actions</div>
+                <div class="quick-actions">
+                  <button class="btn primary" type="button" onclick="refreshAll()">Refresh</button>
+                  <button class="btn ghost" type="button" onclick="exportCsv('users')">Export users.csv</button>
+                  <button class="btn ghost" type="button" onclick="exportCsv('pdfs')">Export pdfs.csv</button>
+                  <button class="btn ghost" type="button" onclick="exportCsv('auth_events')">Export auth_events.csv</button>
+                </div>
+                <p class="tiny muted">Exports download directly from the backend.</p>
+              </div>
+            </div>
+
+            <div class="glass box">
+              <div class="box-title">Recent activity</div>
+              <div class="table-wrap">
+                <table class="table" id="recentTable">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Type</th>
+                      <th>Actor</th>
+                      <th>IP</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentBody">
+                    <tr><td colspan="5" class="muted">Loading…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- USERS -->
+          <div class="tab-panel" id="tab-users">
+            <p class="muted tiny" style="margin: 0 0 10px;">Click a row to view that user's PDF history. Use the buttons to manage their account.</p>
+            <div class="table-wrap">
+              <table class="table" id="usersTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Provider</th>
+                    <th>Verified</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersBody">
+                  <tr><td colspan="7" class="muted">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PDFS -->
+          <div class="tab-panel" id="tab-pdfs">
+            <div class="table-wrap">
+              <table class="table" id="pdfsTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Filename</th>
+                    <th>Uploaded</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="pdfsBody">
+                  <tr><td colspan="5" class="muted">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- ABUSE -->
+          <div class="tab-panel" id="tab-abuse">
+            <div class="abuse-grid">
+              <div class="glass box">
+                <div class="box-title">IP abuse detection</div>
+                <p class="muted">Flags IPs with many failed auth attempts and suspicious signup bursts.</p>
+                <div class="table-wrap">
+                  <table class="table" id="abuseTable">
+                    <thead>
+                      <tr>
+                        <th>IP</th>
+                        <th>Failed logins (1h)</th>
+                        <th>Failed logins (24h)</th>
+                        <th>Signups (24h)</th>
+                        <th>Unique emails (24h)</th>
+                        <th>Risk</th>
+                      </tr>
+                    </thead>
+                    <tbody id="abuseBody">
+                      <tr><td colspan="6" class="muted">Loading…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="actions-row">
+                  <button class="btn ghost" type="button" onclick="exportCsv('ip_abuse')">Export ip_abuse.csv</button>
+                  <button class="btn ghost" type="button" onclick="exportCsv('auth_events')">Export auth_events.csv</button>
+                </div>
+              </div>
+
+              <div class="glass box">
+                <div class="box-title">What this uses</div>
+                <ul class="muted list">
+                  <li>Auth events table logged by backend (login/register/verify/google/resend).</li>
+                  <li>Simple risk score: more failures + more unique emails = higher risk.</li>
+                  <li>You can extend it later with hard blocks / rate limits.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div> <!-- panel-body -->
+      </div> <!-- panel-card -->
+
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© <span id="year"></span> Platform Admin</span>
+    <span>Secure • Observable • Controlled</span>
+  </div>
+</footer>
+
+<script src="/static/ui.js"></script>
+<script src="/static/script.js"></script>
+<script src="/static/admin.js"></script>
+
+</body>
+</html>

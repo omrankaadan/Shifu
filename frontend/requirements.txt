@@ -1,0 +1,29 @@
+fastapi
+uvicorn[standard]
+
+# Environment
+python-dotenv
+
+# Database & validation
+pydantic
+email-validator
+
+# Authentication & security
+python-jose
+passlib[argon2]
+
+# PDF processing
+PyPDF2
+
+# AI integrations
+openai
+
+# Google auth
+google-auth
+
+# HTTP requests
+requests
+
+
+# ASGI toolkit (used by FastAPI internally but you imported it directly)
+starlette

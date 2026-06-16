@@ -1,0 +1,199 @@
+/* /static/login.css - calm auth layout with index-blue palette */
+
+/* ===== Page layout: footer always at bottom ===== */
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content grows to push footer down */
+/* ===== Auth page spacing & alignment ===== */
+
+/* Center the whole block with comfortable side margins */
+.auth-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+
+/* Two-column layout with balanced width */
+.auth-layout {
+  width: 100%;
+  max-width: 1000px;          /* controls overall width */
+  display: grid;
+  grid-template-columns: 0.9fr 0.85fr;
+  gap: 64px;                  /* space between quote & form */
+  align-items: center;
+}
+
+/* LEFT SIDE (quote/text) */
+.auth-left {
+  padding-right: 20px;
+}
+
+.auth-left h1 {
+  margin-bottom: 14px;
+}
+
+.auth-left p {
+  margin-bottom: 18px;
+}
+
+/* RIGHT SIDE (form card) */
+.auth-right {
+  min-width: 450px;           /* keeps form from getting too narrow */
+  max-width: 600px;           /* keeps form compact & readable */
+  margin-left: auto;          /* pushes form nicely to the right */
+  padding: 28px;
+}
+
+/* Inputs spacing */
+.auth-right form {
+  margin-top: 10px;
+}
+
+.auth-right label {
+  margin-top: 14px;
+}
+
+/* Footer spacing safety */
+.footer {
+  margin-top: auto;
+}
+
+/* ===== Responsive tuning ===== */
+@media (max-width: 900px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .auth-left {
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .auth-right {
+    margin-left: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px){
+  .auth-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+
+@media (max-width: 900px){
+  .auth-layout{ grid-template-columns: 1fr; gap:22px; }
+}
+
+.auth-left h1{
+  font-size:38px;
+  margin:0 0 10px;
+  letter-spacing:-0.4px;
+}
+
+.auth-left p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.7;
+  max-width:520px;
+}
+
+.auth-left blockquote{
+  margin:24px 0 0;
+  padding-left:16px;
+  border-left:3px solid var(--accent);
+  font-style:italic;
+  color:var(--muted);
+}
+
+.auth-right{
+  padding:26px;
+}
+
+.auth-right h2{
+  margin:0 0 14px;
+}
+
+label{
+  display:block;
+  margin:12px 0 6px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--stroke);
+  background: var(--input-bg);
+  color:var(--text);
+  outline:none;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+input:focus{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px var(--shadow);
+}
+
+.full-btn{
+  width:100%;
+  margin-top:16px;
+  padding:12px 16px;
+  border-radius:18px;
+}
+
+.message{
+  margin-top:10px;
+  color:var(--accent);
+  font-weight:700;
+}
+
+.hint{
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.switch{
+  margin-top:14px;
+  color:var(--muted);
+}
+
+.switch a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:800;
+}
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 42px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.7;
+  user-select: none;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+

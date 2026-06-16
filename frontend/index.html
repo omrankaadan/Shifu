@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI PDF Analyzer</title>
+
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="stylesheet" href="/static/spinner.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="landing">
+
+  <!-- Animated background + floating icons -->
+  <div class="bg-gradient"></div>
+  <div class="floaters" aria-hidden="true">
+    <span class="floater f1">📄</span>
+    <span class="floater f2">📘</span>
+    <span class="floater f3">🧠</span>
+    <span class="floater f4">📌</span>
+    <span class="floater f5">∑</span>
+    <span class="floater f6">⚡</span>
+  </div>
+
+  <!-- Top Nav -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">AI</div>
+        <div class="brand-text">
+          <div class="brand-name">PDF Analyzer</div>
+          <div class="brand-tag">Summaries • Highlights • Formulas</div>
+        </div>
+      </div>
+
+      <nav class="top-actions">
+        <a class="navlink" href="#how">How it works</a>
+        <a class="navlink" href="#testimonials">Reviews</a>
+
+        <button id="themeToggle" class="theme-btn" type="button" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+          <span class="theme-text">Dark</span>
+        </button>
+
+        <a href="/static/login.html"><button class="btn ghost">Login</button></a>
+        <a href="/static/register.html"><button class="btn primary">Register</button></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="page">
+    <section class="hero section reveal">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <div class="pill">🎁 3 free PDF analyses — no credit card required</div>
+
+          <h1 class="hero-title">
+            Analyze PDFs with <span class="accent">AI</span><br />
+            Get summaries, key points, and formulas instantly.
+          </h1>
+
+          <p class="hero-subtitle">
+            Upload any PDF and receive structured highlights, important points, and formula-aware insights.
+            Designed for students, engineers, and researchers.
+          </p>
+
+          <div class="hero-cta">
+            <a href="/static/register.html"><button class="btn primary big">Get Started Free</button></a>
+            <a href="/static/login.html"><button class="btn ghost big">I already have an account</button></a>
+          </div>
+
+          <div class="trust-row">
+            <div class="trust-item">🔒 Secure sessions</div>
+            <div class="trust-item">⚡ Fast results</div>
+            <div class="trust-item">🧾 Formula-aware</div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="glass-card reveal">
+            <div class="card-top">
+              <div class="card-title">Instant Insights</div>
+              <div class="chip">AI Powered</div>
+            </div>
+
+            <div class="mock">
+              <div class="mock-row">
+                <div class="dot"></div><div class="bar w70"></div>
+              </div>
+              <div class="mock-row">
+                <div class="dot"></div><div class="bar w90"></div>
+              </div>
+              <div class="mock-row">
+                <div class="dot"></div><div class="bar w60"></div>
+              </div>
+
+              <div class="mock-divider"></div>
+
+              <div class="mock-formula">
+                <span class="fx">∑</span>
+                <span class="formula">SNR = 10 log10(Ps / Pn)</span>
+              </div>
+
+              <div class="mock-notes">
+                <span class="hl">Highlighted:</span> “Key theorem”, “critical step”, “final result”
+              </div>
+            </div>
+
+            <div class="card-bottom">
+              <div class="small">Sign in with Google:</div>
+              <div id="googleSignIn" class="google-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Blocks -->
+    <section class="section reveal">
+      <div class="section-head">
+        <h2>Built for real studying & research</h2>
+        <p>Not just “summaries” — you get structure, emphasis, and clarity.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature-card reveal">
+          <h3>📌 Smart Highlights</h3>
+          <p>Extracts the most important points and explains them clearly.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <h3>🧠 Concept Summaries</h3>
+          <p>Turns dense text into easy bullet points you can revise fast.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <h3>∑ Formula Aware</h3>
+          <p>Detects crucial formulas and flags the important ones.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <h3>⚡ Fast Workflow</h3>
+          <p>Designed for quick testing, iterations, and focused results.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="section reveal">
+      <div class="section-head">
+        <h2>How it works</h2>
+        <p>Simple steps. Clean results. Premium experience.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Upload your PDF</h3>
+            <p>Choose a PDF from your device. Works with notes, books, and research papers.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>AI extracts meaning</h3>
+            <p>We parse structure, detect key sections, and focus on the important information.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Get your results</h3>
+            <p>Summaries + highlights + key formulas — ready for studying or reporting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="section reveal">
+      <div class="section-head">
+        <h2>Loved by students & engineers</h2>
+        <p>What people say after using it for real work.</p>
+      </div>
+
+      <div class="testimonials">
+        <div class="t-card reveal">
+          <div class="t-stars">★★★★★</div>
+          <p>“I used it for revision before exams — the highlights saved me hours.”</p>
+          <div class="t-name">— CCE Student</div>
+        </div>
+
+        <div class="t-card reveal">
+          <div class="t-stars">★★★★★</div>
+          <p>“The formula detection is the best part. It catches the important equations.”</p>
+          <div class="t-name">— Engineering Student</div>
+        </div>
+
+        <div class="t-card reveal">
+          <div class="t-stars">★★★★☆</div>
+          <p>“Very clean results. It feels premium and fast, not like a basic summarizer.”</p>
+          <div class="t-name">— Research Assistant</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing teaser -->
+    <section id="pricing" class="section reveal">
+      <div class="section-head">
+        <h2>Pricing</h2>
+        <p>Start free. Upgrade when you need unlimited access.</p>
+      </div>
+
+
+    <!-- Final CTA -->
+    <section class="section final-cta reveal">
+      <div class="final-box">
+        <h2>Ready to analyze your first PDF?</h2>
+        <p>Start free, then upgrade when you want unlimited analysis.</p>
+        <div class="hero-cta">
+          <a href="/static/register.html"><button class="btn primary big">Create Account</button></a>
+          <a href="/static/login.html"><button class="btn ghost big">Login</button></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <span class="brand-mark small">AI</span>
+          <span class="footer-title">PDF Analyzer</span>
+        </div>
+        <p class="footer-text">
+          AI-powered PDF insights: summaries, highlights, and formula-aware extraction.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-head">Pages</div>
+        <a class="footer-link" href="/static/login.html">Login</a>
+        <a class="footer-link" href="/static/register.html">Register</a>
+        <a class="footer-link" href="#how">How it works</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-head">Support</div>
+        <a class="footer-link" href="#testimonials">Reviews</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> AI PDF Analyzer. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="/static/script.js"></script>
+  <script src="/static/landing.js"></script>
+  <script>checkSession();</script>
+
+</body>
+</html>

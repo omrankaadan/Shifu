@@ -1,0 +1,2 @@
+/* /static/register.css - reuse login layout for consistent UI */
+@import url("/static/login.css");

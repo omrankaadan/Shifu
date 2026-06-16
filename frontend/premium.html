@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shifu PDF Analyzer</title>
+  <link rel="stylesheet" href="/static/ui.css">
+  <link rel="stylesheet" href="/static/spinner.css">
+  <link rel="stylesheet" href="/static/premium.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Math rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+
+<body class="app static-bg" onload="loadUser()">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div>
+        <div class="brand-name" id="welcome">Dashboard
+          <div class="page-analyze">
+            <input id="pageAnalyzeInput" class="page-input" type="number" min="1" step="1" placeholder="Page #" />
+            <select id="pageAnalyzeLevel" class="level mini">
+              <option value="low">Low</option>
+              <option value="normal">Normal</option>
+              <option value="big" selected>Big</option>
+            </select>
+            <button class="btn ghost mini" id="pageAnalyzeBtn" type="button" title="Analyze a specific page">🔎 analyze page</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      
+      <button id="themeToggle" class="theme-btn" type="button">
+        <span class="theme-icon">🌙</span><span class="theme-text">Dark</span>
+      </button>
+
+      <div class="settings-wrap">
+  <button class="btn ghost mini settings-btn" id="settingsBtn" title="Settings">⚙️</button>
+</div>
+    </div>
+  </div>
+</header>
+<!-- ============================
+     ROUTE: SETTINGS PAGE
+============================ -->
+<section class="settings-page" id="settingsPage" style="display:none;">
+
+  <div class="settings-layout glass">
+
+    <aside class="settings-nav">
+      <h3>Settings</h3>
+      <a href="#/settings/profile" class="settings-link">👤 Profile</a>
+<a href="#/settings/account" class="settings-link">
+  📊 Account Information
+</a>      <a href="#/settings/privacy" class="settings-link">🔒 Privacy & Policy</a>
+      <a href="#/settings/feedback" class="settings-link">📝 Feedback</a>
+
+      <div class="settings-sep"></div>
+
+      <button class="settings-link danger" id="settingsLogoutBtn">🚪 Logout</button>
+    </aside>
+
+    <section class="settings-content">
+        <div class="settings-header">
+  <button class="btn ghost mini" id="settingsReturnBtn">← Return</button>
+</div>
+
+      <div class="settings-section" data-route="profile">
+  <h2>Profile</h2>
+  <p>Email: <b id="settingsEmail">—</b></p>
+  <p>Account Type: <b id="settingsPlan">Standard</b></p>
+</div>
+
+      <div class="settings-section" data-route="account">
+  <h2>Account Information</h2>
+  <p>Unlimited PDF analysis enabled.</p>
+</div>
+
+      <div class="settings-section" data-route="privacy">
+        <h2>Privacy & Policy</h2>
+        <p>Your PDFs are used only for analysis and chat.</p>
+        <p>No data is sold.</p>
+      </div>
+
+      <div class="settings-section" data-route="feedback">
+        <h2>Feedback</h2>
+        <textarea class="chat-text" placeholder="Tell us what to improve…"></textarea>
+        <button class="btn primary">Send feedback</button>
+      </div>
+
+    </section>
+  </div>
+</section>
+
+<main class="workspace">
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      
+      <h3>Your PDFs</h3>
+<button class="btn ghost mini sidebar-toggle" id="sidebarToggleBtn" title="Toggle sidebar">
+  ☰
+</button>
+
+    </div>
+
+    <div id="pdfCards" class="pdf-cards">
+      <!-- injected -->
+    </div>
+
+    
+  </aside>
+
+  <!-- MAIN CONTENT -->
+    <section class="main-area">
+    
+
+    <div class="glass results-box">
+            <div class="results-head">
+        <div class="results-left">
+          <div class="results-filename" id="resultFileName">No file selected</div>
+        </div>
+
+        <div class="results-actions">
+          <div class="results-meta" id="resultMeta"></div>
+          <button class="btn ghost mini" id="readerModeBtn" type="button" title="Reader mode" aria-label="Reader mode">📖reading mode</button>
+          <button class="btn ghost mini" id="focusToggleBtn" type="button" title="Full screen results" aria-label="Full screen results">⛶</button>
+          <div class="results-menu-wrap">
+  <button class="btn ghost mini" id="resultsMenuBtn" aria-label="More options">⋯</button>
+
+  <div class="results-menu glass" id="resultsMenu" style="display:none;">
+    <button class="menu-item" id="menuCopySummary">📋 Copy summary</button>
+    <button class="menu-item" id="menuCopyHighlights">📋 Copy highlights</button>
+  </div>
+</div>
+
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="PDF analysis sections">
+        <button class="tab active" data-tab="summary" role="tab" aria-selected="true">Summary</button>
+        <button class="tab" data-tab="highlights" role="tab" aria-selected="false">Highlights</button>
+        <button class="tab" data-tab="formulas" role="tab" aria-selected="false">Formulas</button>
+        <button class="tab" data-tab="chat" role="tab" aria-selected="false">Chat</button>
+      </div>
+
+      <div class="panels" id="panels">
+        <div class="panel active" id="panel-summary" role="tabpanel">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-title">Upload a PDF to begin</div>
+          </div>
+          <div id="summaryContent" class="panel-content" style="display:none;"></div>
+        </div>
+
+        <div class="panel" id="panel-highlights" role="tabpanel">
+          <div id="highlightsContent" class="panel-content"></div>
+        </div>
+
+        <div class="panel" id="panel-formulas" role="tabpanel">
+          <div id="formulasContent" class="panel-content"></div>
+        </div>
+
+
+        <div class="panel" id="panel-chat" role="tabpanel">
+          <div class="chat-wrap">
+            <div class="chat-messages" id="chatMessages">
+              <div class="empty-state">
+                <div class="empty-title">Ask about this PDF</div>
+                <div class="empty-sub">AI chat over your PDF — grounded in the document with page citations.</div>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <input id="chatInput" class="chat-text" type="text" placeholder="Ask a question about the PDF…" />
+              <button class="btn primary" id="chatSendBtn" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM-CENTER UPLOAD DOCK -->
+    <div class="upload-dock">
+      <div class="glass upload-box">
+        <div class="upload-head">
+  <div>
+    <h3 class="upload-title">Upload PDF</h3>
+  </div>
+
+  <div class="upload-actions">
+    <button class="btn ghost mini" id="uploadToggleBtn" title="Collapse upload">
+      ⤢
+    </button>
+    <button class="btn ghost mini" type="button" id="clearBtn">Clear</button>
+  </div>
+</div>
+
+
+        <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Drop PDF here or choose a file">
+          <div class="dz-icon">📄</div>
+          <div class="dz-text">
+            <div class="dz-title">Drag & drop your PDF</div>
+            <div class="dz-sub">or</div>
+          </div>
+
+          <input type="file" id="pdf_file" class="file-input" accept="application/pdf">
+          <label class="btn primary file-btn" for="pdf_file">Choose file</label>
+
+          <div class="file-name" id="fileName">No file selected</div>
+
+
+          <div class="level-select">
+            <label class="level-label" for="uploadPageInput">Page:</label>
+            <input id="uploadPageInput" class="page-input" type="number" min="1" step="1" placeholder="All" />
+
+            <label class="level-label" for="analysisLevel">Analyze:</label>
+            <select id="analysisLevel" class="level">
+              <option value="low">Low</option>
+              <option value="normal" selected>Normal</option>
+              <option value="big">Big</option>
+            </select>
+          </div>
+
+          <button class="btn primary analyze-btn" id="analyzeBtn" type="button" onclick="uploadPDF()">Analyze</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Return buttons (Reader / Fullscreen) -->
+<div class="mode-return" id="modeReturnBar" aria-label="Return buttons">
+<button class="btn ghost mini" id="exitReaderBtn" type="button">
+  Back to dashboard
+</button>
+<button class="btn ghost mini" id="exitFocusBtn" type="button">
+  Exit
+</button>
+</div>
+
+<!-- Chat Full View (PDF + Chat only) -->
+<div class="chat-full-overlay" id="chatFullOverlay" style="display:none;" role="dialog" aria-modal="true">
+  <div class="chat-full-header glass">
+    <div class="chat-full-title">Chat with your PDF</div>
+    <button class="btn ghost mini" id="chatFullReturnBtn" type="button">← Return</button>
+  </div>
+  <div class="chat-full-body">
+    <div class="chat-full-left">
+      <iframe id="chatPdfFrame" class="chat-pdf-frame" title="PDF reader" loading="lazy"></iframe>
+    </div>
+    <div class="chat-full-right" id="chatFullChatHost">
+      <!-- chat UI will be moved here -->
+    </div>
+  </div>
+</div>
+
+<!-- Modals: Profile / Usage / Feedback / Policy -->
+<div class="modal-overlay" id="profileOverlay" style="display:none;">
+  <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+    <div class="modal-head">
+      <h3 id="profileTitle">Profile</h3>
+      <button class="btn ghost mini" type="button" data-close="profileOverlay">✕</button>
+    </div>
+    <div class="modal-sub" id="profileBody">Loading…</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="usageOverlay" style="display:none;">
+  <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="usageTitle">
+    <div class="modal-head">
+<h3 id="usageTitle">Account Information</h3>
+      <button class="btn ghost mini" type="button" data-close="usageOverlay">✕</button>
+    </div>
+    <div class="modal-sub" id="usageBody">Loading…</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="feedbackOverlay" style="display:none;">
+  <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+    <div class="modal-head">
+      <h3 id="feedbackTitle">Feedback</h3>
+      <button class="btn ghost mini" type="button" data-close="feedbackOverlay">✕</button>
+    </div>
+
+    <div class="modal-sub">Tell us what to improve. This helps a lot.</div>
+
+    <div class="feedback-form">
+      <label class="feedback-label">Rating (1–5)</label>
+      <input class="chat-text" id="feedbackRating" type="number" min="1" max="5" placeholder="Optional" />
+      <label class="feedback-label">Message</label>
+      <textarea class="feedback-textarea" id="feedbackMessage" placeholder="Write your feedback…"></textarea>
+      <button class="btn primary" id="feedbackSendBtn" type="button">Send</button>
+      <div class="feedback-hint" id="feedbackHint"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="policyOverlay" style="display:none;">
+  <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="policyTitle">
+    <div class="modal-head">
+      <h3 id="policyTitle">Privacy & Policy</h3>
+      <button class="btn ghost mini" type="button" data-close="policyOverlay">✕</button>
+    </div>
+
+    <div class="modal-sub policy-text">
+      <p><b>Data:</b> Your PDFs are stored only to provide analysis, previews, and PDF-grounded chat. We do not sell your data.</p>
+      <p><b>AI processing:</b> If an API key is configured, parts of your PDF may be sent to the AI provider to generate summaries/answers.</p>
+      <p><b>Security:</b> Sessions are protected by httpOnly cookies. Always sign out on shared devices.</p>
+      <p>If you need deletion/export, contact the administrator.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Fancy processing overlay (PDF under processing) -->
+<div class="processing-overlay" id="processingOverlay" style="display:none;" aria-live="polite" aria-busy="true">
+  <div class="processing-card glass">
+    <div class="processing-spinner"></div>
+    <div class="processing-title" id="processingTitle">Analyzing your PDF</div>
+    <div class="processing-sub" id="processingSub">Extracting text, finding key points, and detecting formulas…</div>
+  </div>
+</div>
+
+
+<script src="/static/ui.js"></script>
+<script src="/static/script.js"></script>
+<script src="/static/modes.js"></script>
+
+</body>
+</html>

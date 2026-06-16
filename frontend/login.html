@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login - AI PDF Analyzer</title>
+
+  <link rel="stylesheet" href="/static/ui.css">
+  <link rel="stylesheet" href="/static/login.css">
+  <link rel="stylesheet" href="/static/spinner.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="app static-bg page-layout">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div>
+        <div class="brand-name">PDF Analyzer</div>
+        <div class="brand-tag">Login</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="themeToggle" class="theme-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span><span class="theme-text">Dark</span>
+      </button>
+      <a class="navlink" href="/static/index.html">Home</a>
+      <a href="/static/register.html"><button class="btn primary">Register</button></a>
+    </div>
+  </div>
+</header>
+
+<main class="auth-page">
+  <div class="auth-layout reveal">
+
+    <!-- LEFT: Quote -->
+    <div class="auth-left">
+      <h1>Study smarter.</h1>
+      <p>
+        Turn complex PDFs into clear summaries, highlights, and formulas.
+        Built for students, engineers, and researchers.
+      </p>
+
+      <blockquote>
+        “Focus on understanding, not searching.”
+      </blockquote>
+    </div>
+
+    <!-- RIGHT: Login Form -->
+    <div class="auth-right glass">
+      <h2>Welcome back</h2>
+
+<form id="loginForm" onsubmit="return false;">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+
+<label>Password</label>
+<div class="password-wrap">
+  <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+  <span class="toggle-password" onclick="togglePassword('password', this)">👁</span>
+</div>
+
+        <button class="btn primary full-btn" id="submitBtn" type="button">
+          <span class="btn-text">Login</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+
+      <div id="resendWrap" style="display:none; margin-top:12px;">
+        <button id="resendBtn" class="btn ghost full-btn" onclick="resendVerification()">
+          Resend verification email
+        </button>
+        <p id="resendMessage" class="hint"></p>
+      </div>
+
+      <p id="login-message" class="message"></p>
+
+      <p class="switch">
+        Don’t have an account?
+        <a href="/static/register.html">Register</a>
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© <span id="year"></span> AI PDF Analyzer</span>
+    <span>Secure • Fast • Focused</span>
+  </div>
+</footer>
+
+<script src="/static/ui.js"></script>
+<script src="/static/script.js"></script>
+
+</body>
+</html>
